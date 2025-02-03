@@ -217,7 +217,7 @@
 							"});",
 							"",
 							"pm.test(\"Check mail is true\", function () {",
-							"    pm.expect(pm.environment.get(\"Mail\")).to.eql(pm.response.json().user.mail)",
+							"    pm.expect(pm.environment.get(\"NewUserEmail\")).to.eql(pm.response.json().user.mail)",
 							"});",
 							"",
 							"pm.test(\"Check CPF is true\", function () {",
