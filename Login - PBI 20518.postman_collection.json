@@ -1,0 +1,503 @@
+{
+	"info": {
+		"_postman_id": "378118e8-dad7-47f3-b309-dcf5e0b2bf4a",
+		"name": "Login - PBI 20518",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22798336"
+	},
+	"item": [
+		{
+			"name": "Login com email e senha em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function () {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail é obrigatorio\", function () {\r",
+							"    pm.expect(\"O campo e-mail é obrigatório.\").to.eql(pm.response.json().mail);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem senha é obrigatório\", function () {\r",
+							"\t\tpm.expect(\"O campo senha é obrigatório.\").to.eql(pm.response.json().password);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"\",\r\n    \"password\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com email e senha inválidas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function () {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail e senha são inválidos\", function () {\r",
+							"\t\tpm.expect(\"E-mail ou senha informados são inválidos.\").to.eql(pm.response.json().alert);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email-invalido}}\",\r\n    \"password\": \"{{password-invalido}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com email em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function () {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail é obrigatório\", function () {\r",
+							"\t\tpm.expect(\"O campo e-mail é obrigatório.\").to.eql(pm.response.json().mail);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com email inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function() {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail e senha são inválidos\", function() {\r",
+							"\t\tpm.expect(\"E-mail ou senha informados são inválidos.\").to.eql(pm.response.json().alert);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email-invalido}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com campo adicional",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {\r",
+							"\tpm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"fullName\": \"Andre Minato\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com senha em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function() {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem senha é obrigatório\", function() {\r",
+							"\t\tpm.expect(\"O campo senha é obrigatório.\").to.eql(pm.response.json().password);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email}}\",\r\n    \"password\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login com senha inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function() {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail e senha são inválidos\", function() {\r",
+							"\t\tpm.expect(\"E-mail ou senha informados são inválidos.\").to.eql(pm.response.json().alert);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email}}\",\r\n    \"password\": \"{{password-invalido}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login de Sucesso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem autenticado com sucesso\", function () {\r",
+							"    let fullName =  pm.response.json().user.fullName\r",
+							"    pm.expect(\"Olá \" + fullName + \", autenticação autorizada com sucesso!\").to.eql(pm.response.json().msg);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verificar se E-mail da requisição e o mesmo da resposta\", () => {\r",
+							"    pm.expect(pm.environment.get(\"email\")).to.eql(pm.response.json().user.mail)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se token existe na resposta\", function () {\r",
+							"    pm.expect(pm.response.json().token).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar user status é true\", function () {\r",
+							"    pm.expect(true).to.eql(pm.response.json().user.status);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token_user",
+			"value": ""
+		}
+	]
+}

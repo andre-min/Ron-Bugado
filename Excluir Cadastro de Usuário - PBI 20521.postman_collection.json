@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "ece55188-2402-4617-babe-6a788784d3ee",
+		"name": "Excluir Cadastro de Usuário - PBI 20521",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22798336"
+	},
+	"item": [
+		{
+			"name": "Login com usuário de teste",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"TestUserToken\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Verificar Status code é 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem autenticado com sucesso\", function () {\r",
+							"    let fullName =  pm.response.json().user.fullName\r",
+							"    pm.expect(\"Olá \" + fullName + \", autenticação autorizada com sucesso!\").to.eql(pm.response.json().msg);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se E-mail da requisição e o mesmo da resposta\", () => {\r",
+							"    pm.expect(pm.environment.get(\"email\")).to.eql(pm.response.json().user.mail);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se token existe na resposta\", function () {\r",
+							"    pm.expect(pm.response.json().token).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar user status é true\", function () {\r",
+							"    pm.expect(true).to.eql(pm.response.json().user.status);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{TestUserEmail}}\",\r\n    \"password\": \"{{TestUserPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar novo usuário sucesso",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function gerarCpf() {",
+							"  const num1 = aleatorio(); ",
+							"  const num2 = aleatorio();",
+							"  const num3 = aleatorio();",
+							"  const dig1 = dig(num1, num2, num3); ",
+							"  const dig2 = dig(num1, num2, num3, dig1);",
+							"  return `${num1}${num2}${num3}${dig1}${dig2}`;",
+							"}",
+							" ",
+							"function dig(n1, n2, n3, n4) {",
+							"  const nums = n1.split(\"\").concat(n2.split(\"\"), n3.split(\"\"));",
+							"  if (n4 !== undefined){ ",
+							"    nums[9] = n4;",
+							"  }",
+							"  let x = 0;",
+							"  for (let i = (n4 !== undefined ? 11:10), j = 0; i >= 2; i--, j++) {",
+							"    x += parseInt(nums[j]) * i;",
+							"  }",
+							"  const y = x % 11;",
+							"  return y < 2 ? 0 : 11 - y;",
+							"}",
+							"",
+							"function aleatorio() {",
+							"  const aleat = Math.floor(Math.random() * 999);",
+							"  return (\"\" + aleat).padStart(3, '0');",
+							"}",
+							"pm.environment.set(\"CPF\", gerarCpf());",
+							"",
+							"function firstName() {",
+							"    let firstName = nomes = [",
+							"    \"Andre\", \"Luiza\", \"Vanessa\", \"Lula\", \"Carlos\", \"Maria\", \"João\", \"Paula\", ",
+							"    \"Ana\", \"Pedro\", \"Lucas\", \"Beatriz\", \"Felipe\", \"Camila\", \"Gabriel\", \"Juliana\", ",
+							"    \"Rafael\", \"Fernanda\", \"Ricardo\", \"Larissa\", \"Gustavo\", \"Mariana\", \"Eduardo\", ",
+							"    \"Renata\", \"Victor\", \"Simone\", \"Sofia\", \"Bruno\", \"Isabela\", \"Mário\", \"Tatiane\", ",
+							"    \"Júlio\", \"Tânia\", \"Sérgio\", \"Luciana\", \"Thiago\", \"Cláudia\", \"Hugo\", \"Giovana\", ",
+							"    \"César\", \"Larissa\", \"Marcelo\", \"Elaine\", \"Vitor\", \"Mônica\", \"Alexandre\", \"Letícia\", ",
+							"    \"Daniel\", \"Carla\", \"Fernando\", \"Patrícia\", \"Sérgio\", \"Viviane\", \"Marcos\", \"Cíntia\", ",
+							"    \"Roberto\", \"Kátia\", \"Diogo\", \"Marília\", \"Túlio\", \"Paulo\", \"Adriana\", \"Jaqueline\", ",
+							"    \"Reginaldo\", \"Sílvia\", \"Renato\", \"Isis\", \"Sônia\", \"Alexia\", \"Aline\", \"Rogério\", ",
+							"    \"Tatiane\", \"Ricardo\", \"Gisele\", \"Fábio\", \"Eunice\", \"Raul\", \"Milene\", \"Ricardo\", ",
+							"    \"Marcelo\", \"Daniela\", \"Kelly\", \"Cássio\", \"Cláudia\", \"Francisco\", \"Alessandra\", ",
+							"    \"Gisele\", \"Gustavo\", \"Clara\", \"Tatiane\", \"Joana\", \"Carlos\", \"Aline\", \"Viviane\", ",
+							"    \"Júlia\", \"André\", \"Luciano\", \"Alicia\", \"Eliane\", \"Marcio\", \"Rogério\", \"Eliete\", ",
+							"    \"Jéssica\", \"Simone\", \"Thiago\", \"Luiz\", \"Carlos\", \"Rafaela\", \"Marcela\", \"Jonas\", ",
+							"    \"Lúcia\", \"Marcos\", \"Sônia\", \"Eduarda\", \"Livia\"",
+							"]",
+							"    let randomItem = firstName[Math.floor(Math.random() * firstName.length)];",
+							"    return randomItem;",
+							"}",
+							"pm.environment.set(\"FirstName\", firstName());",
+							"",
+							"function lastName() {",
+							"    var lastName = [",
+							"    \"Silva\", \"Santos\", \"Oliveira\", \"Pereira\", \"Costa\", \"Rodrigues\", \"Almeida\", ",
+							"    \"Martins\", \"Souza\", \"Lima\", \"Gomes\", \"Ribeiro\", \"Carvalho\", \"Fernandes\", \"Araujo\", ",
+							"    \"Barbosa\", \"Melo\", \"Dias\", \"Cavalcanti\", \"Nascimento\", \"Pinto\", \"Vieira\", \"Teixeira\", ",
+							"    \"Ramos\", \"Faria\", \"Moura\", \"Campos\", \"Machado\", \"Monteiro\", \"Santiago\", \"Nascimento\", ",
+							"    \"Brandão\", \"Cunha\", \"Freitas\", \"Serrano\", \"Queiroz\", \"Duarte\", \"Mendes\", \"Cardoso\", ",
+							"    \"Lopes\", \"Martins\", \"Batista\", \"Siqueira\", \"Moreira\", \"Figueiredo\", \"Andrade\", \"Araújo\", ",
+							"    \"Borges\", \"Lima\", \"Cunha\", \"Costa\", \"Batista\", \"Correia\", \"Silveira\", \"Bastos\", \"Leal\", ",
+							"    \"Ferreira\", \"Gonçalves\", \"Tavares\", \"Queiroz\", \"Lima\", \"Campos\", \"Carneiro\", \"Santos\", ",
+							"    \"Vasconcelos\", \"Vieira\", \"Farias\", \"Souza\", \"Pereira\", \"Tavares\", \"Silva\", \"Alves\", ",
+							"    \"Xavier\", \"Soares\", \"Barbosa\", \"Lima\", \"Menezes\", \"Ribeiro\", \"Pimentel\", \"Santos\", ",
+							"    \"Dias\", \"Castro\", \"Melo\", \"Pinto\", \"Machado\", \"Pinheiro\", \"Guerra\", \"Alves\", ",
+							"    \"Freitas\", \"Cavalcanti\", \"Montez\", \"Pereira\", \"Gomes\", \"Santos\", \"Costa\", ",
+							"    \"Ribeiro\", \"Teixeira\", \"Azevedo\", \"Martins\", \"Ramos\", \"Ribeiro\", \"Cardoso\", \"Lima\", ",
+							"    \"Monteiro\", \"Leão\", \"Lopes\", \"Melo\", \"Brandão\", \"Borges\", \"Ribeiro\", \"Moraes\", ",
+							"    \"Figueira\", \"Silva\", \"Tavares\", \"Cavalcante\", \"Mendes\", \"Siqueira\", \"Machado\"",
+							"]",
+							"",
+							"    let randomItem = lastName[Math.floor(Math.random() * lastName.length)];",
+							"    return randomItem;",
+							"}",
+							"pm.environment.set(\"LastName\", lastName());",
+							"",
+							"pm.environment.set(\"FullName\", pm.environment.get(\"FirstName\") + \" \" + pm.environment.get(\"LastName\"));",
+							"",
+							"let name = pm.environment.get(\"FullName\");",
+							"",
+							"function fullNameFormat(str) {",
+							"  return str",
+							"    .normalize('NFD') // Normaliza a string para decompor os caracteres acentuados",
+							"    .replace(/[\\u0300-\\u036f]/g, '') // Remove os caracteres acentuados",
+							"    .replace(/\\s+/g, '') // Remove os espaços em branco",
+							"    .toLowerCase(); // Converte para minúsculas",
+							"}",
+							"",
+							"function provedorEmail () {",
+							"    let provedorEmail = [",
+							"        \"@gmail.com\", \"@outlook.com\", \"@yahoo.com\", \"@gmail.com.br\", \"@hotmail.com.br\", \"@uol.com.br\", \"@bol.com.br\", \"@terra.br\", \"@oi.com.br\", \"@empresa.com.br\", \"@universidade.edu.br\"",
+							"    ]",
+							"    let randomItem = provedorEmail[Math.floor(Math.random() * provedorEmail.length)];",
+							"    return randomItem;",
+							"}",
+							"",
+							"pm.environment.set(\"NewUserEmail\", fullNameFormat(name) + provedorEmail());",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" pm.environment.set(\"NewUserId\", pm.response.json().user._id)",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Check message is true\", function () {",
+							"    pm.expect(\"Olá \" + pm.environment.get(\"FullName\") + \", cadastro realizado com sucesso.\").to.eql(pm.response.json().msg)",
+							"});",
+							"",
+							"pm.test(\"Check FullName is true\", function () {",
+							"    pm.expect(pm.environment.get(\"FullName\")).to.eql(pm.response.json().user.fullName);",
+							"});",
+							"",
+							"pm.test(\"Check mail is true\", function () {",
+							"    pm.expect(pm.environment.get(\"Mail\")).to.eql(pm.response.json().user.mail)",
+							"});",
+							"",
+							"pm.test(\"Check CPF is true\", function () {",
+							"    pm.expect(pm.environment.get(\"CPF\")).to.eql(pm.response.json().user.cpf)",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Check status is true\", function () {",
+							"    pm.expect(true).to.eql(pm.response.json().user.status)",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{NewUserEmail}}\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": \"{{CPF}}\",\n  \"password\": \"{{NewUserPassword}}\",\n  \"confirmPassword\": \"{{NewUserPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/user?token={{TestUserToken}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{TestUserToken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login novo usuário com sucesso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem autenticado com sucesso\", function () {\r",
+							"    let fullName =  pm.response.json().user.fullName\r",
+							"    pm.expect(\"Olá \" + fullName + \", autenticação autorizada com sucesso!\").to.eql(pm.response.json().msg);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se E-mail da requisição e o mesmo da resposta\", () => {\r",
+							"    pm.expect(pm.environment.get(\"NewUserEmail\")).to.eql(pm.response.json().user.mail);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se token existe na resposta\", function () {\r",
+							"    pm.expect(pm.response.json().token).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar user status é true\", function () {\r",
+							"    pm.expect(true).to.eql(pm.response.json().user.status);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{NewUserEmail}}\",\r\n    \"password\": \"{{NewUserPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 200\", function () {",
+							"\t\tpm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Validar mensagem deletado com sucesso\", function () {",
+							"    pm.expect(\"Usuário deletado com sucesso!.\").to.eql(pm.response.json().msg);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://ron-bugado.qacoders.dev.br/api/user/{{NewUserId}}?token={{TestUserToken}}",
+					"protocol": "https",
+					"host": [
+						"ron-bugado",
+						"qacoders",
+						"dev",
+						"br"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{NewUserId}}"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{TestUserToken}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X 'DELETE' \\\n  'https://ron-bugado.qacoders.dev.br/api/user/679ecae44b03e1eb32f2eaca?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmRiNWQ4NDFkZjU1NDE1MGU2ZDY0YmQiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR1NGcwYm81OTlFa1E4RGZSeGw4bHlPTzhiaDZ5QnlyRlVhN2k5cDV0N2pycElFaUx6MzJMLiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDA2LzA5LzIwMjQsIDE2OjUyOjM2IEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjZkYjVkODQxZGY1NTQxNTBlNmQ2NGJlIn1dLCJfX3YiOjAsImlhdCI6MTczODQ1OTU3NCwiZXhwIjoxNzM4NTQ1OTc0fQ.n9Y23f_e72stkU517aqcaBCHR1AJTc0WK53Zxil1Bbo' \\\n  -H 'accept: application/json'"
+			},
+			"response": []
+		},
+		{
+			"name": "Login - Verificar se usuário foi deletado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar Status code é 400\", function () {\r",
+							"\t\tpm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem e-mail e senha são inválidos\", function () {\r",
+							"\t\tpm.expect(\"E-mail ou senha informados são inválidos.\").to.eql(pm.response.json().alert);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{NewUserEmail}}\",\r\n    \"password\": \"{{NewUserPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/login/",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar id novo usuário do request e o mesmo do response\", function () {",
+							"    pm.expect(pm.environment.get(\"NewUserId\")).to.eql(pm.response.json()._id);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verificar se o status foi alterado para false\", function () {",
+							"    pm.expect(false).to.eql(pm.response.json().status);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://ron-bugado.qacoders.dev.br/api/user/{{NewUserId}}?token={{TestUserToken}}",
+					"protocol": "https",
+					"host": [
+						"ron-bugado",
+						"qacoders",
+						"dev",
+						"br"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{NewUserId}}"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{TestUserToken}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X 'GET' \\\n  'https://ron-bugado.qacoders.dev.br/api/user/67a0b9fb4b03e1eb32f2ef58?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmRiNWQ4NDFkZjU1NDE1MGU2ZDY0YmQiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR1NGcwYm81OTlFa1E4RGZSeGw4bHlPTzhiaDZ5QnlyRlVhN2k5cDV0N2pycElFaUx6MzJMLiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDA2LzA5LzIwMjQsIDE2OjUyOjM2IEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjZkYjVkODQxZGY1NTQxNTBlNmQ2NGJlIn1dLCJfX3YiOjAsImlhdCI6MTczODU4NjUzMSwiZXhwIjoxNzM4NjcyOTMxfQ.-CNZoUm81M6315TwcwqBLyXQNc2MZUmCY1LkZUIRLKk' \\\n  -H 'accept: application/json'"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
