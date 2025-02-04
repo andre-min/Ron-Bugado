@@ -270,42 +270,17 @@
 			"response": []
 		},
 		{
-			"name": "Login novo usuário com sucesso",
+			"name": "Buscar por id",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Verificar Status code é 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Validar mensagem autenticado com sucesso\", function () {\r",
-							"    let fullName =  pm.response.json().user.fullName\r",
-							"    pm.expect(\"Olá \" + fullName + \", autenticação autorizada com sucesso!\").to.eql(pm.response.json().msg);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se E-mail da requisição e o mesmo da resposta\", () => {\r",
-							"    pm.expect(pm.environment.get(\"NewUserEmail\")).to.eql(pm.response.json().user.mail);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se token existe na resposta\", function () {\r",
-							"    pm.expect(pm.response.json().token).to.exist;\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar user status é true\", function () {\r",
-							"    pm.expect(true).to.eql(pm.response.json().user.status);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
+							"pm.test(\"Validar id novo usuário do request e o mesmo do response\", function () {",
+							"    pm.expect(pm.environment.get(\"NewUserId\")).to.eql(pm.response.json()._id);",
+							"});",
+							"",
+							"",
 							""
 						],
 						"type": "text/javascript",
@@ -314,28 +289,35 @@
 				}
 			],
 			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"mail\": \"{{NewUserEmail}}\",\r\n    \"password\": \"{{NewUserPassword}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
 					}
-				},
+				],
 				"url": {
-					"raw": "{{url_base}}/api/login/",
+					"raw": "https://ron-bugado.qacoders.dev.br/api/user/{{NewUserId}}?token={{TestUserToken}}",
+					"protocol": "https",
 					"host": [
-						"{{url_base}}"
+						"ron-bugado",
+						"qacoders",
+						"dev",
+						"br"
 					],
 					"path": [
 						"api",
-						"login",
-						""
+						"user",
+						"{{NewUserId}}"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{TestUserToken}}"
+						}
 					]
-				}
+				},
+				"description": "Generated from cURL: curl -X 'GET' \\\n  'https://ron-bugado.qacoders.dev.br/api/user/67a0b9fb4b03e1eb32f2ef58?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmRiNWQ4NDFkZjU1NDE1MGU2ZDY0YmQiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR1NGcwYm81OTlFa1E4RGZSeGw4bHlPTzhiaDZ5QnlyRlVhN2k5cDV0N2pycElFaUx6MzJMLiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDA2LzA5LzIwMjQsIDE2OjUyOjM2IEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjZkYjVkODQxZGY1NTQxNTBlNmQ2NGJlIn1dLCJfX3YiOjAsImlhdCI6MTczODU4NjUzMSwiZXhwIjoxNzM4NjcyOTMxfQ.-CNZoUm81M6315TwcwqBLyXQNc2MZUmCY1LkZUIRLKk' \\\n  -H 'accept: application/json'"
 			},
 			"response": []
 		},
@@ -393,7 +375,7 @@
 			"response": []
 		},
 		{
-			"name": "Login - Verificar se usuário foi deletado",
+			"name": "Login - Verificar se usuário foi excluído",
 			"event": [
 				{
 					"listen": "test",
@@ -445,62 +427,6 @@
 						""
 					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar por id",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Validar id novo usuário do request e o mesmo do response\", function () {",
-							"    pm.expect(pm.environment.get(\"NewUserId\")).to.eql(pm.response.json()._id);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Verificar se o status foi alterado para false\", function () {",
-							"    pm.expect(false).to.eql(pm.response.json().status);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "accept",
-						"value": "application/json"
-					}
-				],
-				"url": {
-					"raw": "https://ron-bugado.qacoders.dev.br/api/user/{{NewUserId}}?token={{TestUserToken}}",
-					"protocol": "https",
-					"host": [
-						"ron-bugado",
-						"qacoders",
-						"dev",
-						"br"
-					],
-					"path": [
-						"api",
-						"user",
-						"{{NewUserId}}"
-					],
-					"query": [
-						{
-							"key": "token",
-							"value": "{{TestUserToken}}"
-						}
-					]
-				},
-				"description": "Generated from cURL: curl -X 'GET' \\\n  'https://ron-bugado.qacoders.dev.br/api/user/67a0b9fb4b03e1eb32f2ef58?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmRiNWQ4NDFkZjU1NDE1MGU2ZDY0YmQiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR1NGcwYm81OTlFa1E4RGZSeGw4bHlPTzhiaDZ5QnlyRlVhN2k5cDV0N2pycElFaUx6MzJMLiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDA2LzA5LzIwMjQsIDE2OjUyOjM2IEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjZkYjVkODQxZGY1NTQxNTBlNmQ2NGJlIn1dLCJfX3YiOjAsImlhdCI6MTczODU4NjUzMSwiZXhwIjoxNzM4NjcyOTMxfQ.-CNZoUm81M6315TwcwqBLyXQNc2MZUmCY1LkZUIRLKk' \\\n  -H 'accept: application/json'"
 			},
 			"response": []
 		}
